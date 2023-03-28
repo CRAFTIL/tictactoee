@@ -1,3 +1,5 @@
+const githubURL = "https://github.com/CRAFTIL/tictactoee"
+
 const express = require("express")
 
 const fs = require("node:fs")
