@@ -131,7 +131,7 @@ function newGame() {
 	for(let i in squares) {
 		let square = squares[i]
 		square.innerHTML = ""
-		square.style.backgroundColor = "white"
+		if(square.style.backgroundColor) square.style.backgroundColor = "white"
 	}
 
 yourTurn(board)
