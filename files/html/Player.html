@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+
+	<style>
+		h1 {
+  text-align: center;
+}
+		td {
+  width: 100px;
+  height: 100px;
+  
+}
+table {
+  margin: 5px auto;
+}
+.vert {
+  border-left: 2px solid black;
+  border-right: 2px solid black;
+}
+.hori {
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
+}
+
+img {
+	width: 100%;
+	height: 100%
+}
+
+h2 {
+font-size: 30px;
+}
+
+#playagain {
+	border-radius: 20px;
+	font-size: 50px;
+	text-align: center;
+	display: none;
+}
+#playagain1 {
+	border-radius: 20px;
+	font-size: 50px;
+	text-align: center;
+	display: none;
+}
+
+div {
+	text-align: center;
+}
+
+	</style>
+
+</head>
+<body>
+	<div>
+	<h1>איקס עיגול</h1>
+	<table>
+		<tr>
+		  <td id="zero"></td>
+		  <td id="one" class="vert"></td>
+		  <td id="two"></td>
+		</tr>
+		<tr>
+		  <td id="three" class="hori"></td>
+		  <td id="four"class="vert hori"></td>
+		  <td id="five"class="hori"></td>
+		</tr>
+		<tr>
+		  <td id="six"></td>
+		  <td id="seven" class="vert"></td>
+		  <td id="eight"></td>
+		</tr>
+	  </table>
+	  <h2>It's your turn!</h2>
+	  <button id="playagain" onclick="window.location.reload()">Play again</button>
+      <button id="playagain1" onclick="window.location.href='/ai2'">I start</button>
+	  </div>
+
+</body>
+</html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="/javascript/Player.js"></script>
