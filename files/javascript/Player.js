@@ -1,3 +1,5 @@
+const githubURL = "https://github.com/CRAFTIL/tictactoee"
+
 let freshBoard = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 let corners = [0, 2, 6, 8];
 let antiCorners = [1, 3, 5, 7];
@@ -386,13 +388,13 @@ function recommended(board) {
     return isTrapV2.rcmnd;
   }
   /*else if(availableOppositeOfEnemyCorner.length > 0) {
-	    console.log("3")
-			return oppositeCorners[availableOppositeOfEnemyCorner[0]]
-		}*/
+      console.log("3")
+      return oppositeCorners[availableOppositeOfEnemyCorner[0]]
+    }*/
   /*else if(lonleyO) {
-			console.log("lonley o")
-			return lonleyO.recommended
-		}*/
+      console.log("lonley o")
+      return lonleyO.recommended
+    }*/
   if (board[4] == "o") {
     if (availableAntiCorners.length > 1) {
       console.log("if you have the middle and can put in anti corner");
@@ -620,7 +622,7 @@ function yourTurn(board) {
   for (let i in squares) {
     let square = element(`#${translate(i)}`);
     if (!square) return;
-    square.onclick = function () {
+    square.onclick = function() {
       if (checkSquare(board, i)) return;
       let index = reverseTranslate(square.id);
       placeX(board, index);
@@ -643,7 +645,7 @@ function disableClicks() {
 function botTurn(board) {
   let whereToPlace = recommended(board);
   element("h2")[0].innerText = "It's my turn!";
-  setTimeout(function () {
+  setTimeout(function() {
     placeCircle(board, whereToPlace);
     if (isWin(board)) return;
     yourTurn(board);
