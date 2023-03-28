@@ -83,7 +83,6 @@ let cornerStats = {
 
 var board = newGame();
 
-newGame();
 
 function isTwoInARowPlayer(board, uhhuhyes) {
   var result;
@@ -611,6 +610,7 @@ function newGame() {
   for (let i in squares) {
     let square = squares[i];
     square.innerHTML = "";
+    square.style.backgroundColor = "white"
   }
 
   yourTurn(board);

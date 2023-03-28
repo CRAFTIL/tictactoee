@@ -22,7 +22,6 @@ let oppositeCorners = {
 
 var board = newGame()
 
-newGame()
 
 function checkSquare(board, square) {
     if(typeof board[square] == "number") return;
@@ -132,6 +131,7 @@ function newGame() {
 	for(let i in squares) {
 		let square = squares[i]
 		square.innerHTML = ""
+		square.style.backgroundColor = "white"
 	}
 
 yourTurn(board)

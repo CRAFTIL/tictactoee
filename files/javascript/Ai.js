@@ -634,6 +634,7 @@ function newGame() {
   for (let i in squares) {
     let square = squares[i];
     square.innerHTML = "";
+    square.style.backgroundColor = "white"
   }
 
   botTurn(board);
