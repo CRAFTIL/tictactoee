@@ -350,20 +350,20 @@ function isItFirstTurn(board) {
 }
 
 function trapAttempt(board) {
-  if(board[4] == "x") {
+  if (board[4] == "x") {
     let myCorners = corners.filter(corner => checkSquare(board, corner) == "o")
-    if(myCorners.length == 1) {
-        let theCorner = myCorners[0]
-        let everythingElse = freshBoard.filter(square => ![4, theCorner].includes(square))
-        if(everythingElse.every(square => !checkSquare(board, square))) {
-            return {
-                isTrue: true,
-                position: oppositeCorners[theCorner]
-            }
+    if (myCorners.length == 1) {
+      let theCorner = myCorners[0]
+      let everythingElse = freshBoard.filter(square => ![4, theCorner].includes(square))
+      if (everythingElse.every(square => !checkSquare(board, square))) {
+        return {
+          isTrue: true,
+          position: oppositeCorners[theCorner]
+        }
+      }
     }
   }
-}
-return false;
+  return false;
 }
 
 function recommended(board) {
@@ -413,13 +413,13 @@ function recommended(board) {
     return isTrapV2.rcmnd;
   }
   /*else if(availableOppositeOfEnemyCorner.length > 0) {
-	    console.log("3")
-			return oppositeCorners[availableOppositeOfEnemyCorner[0]]
-		}*/
+      console.log("3")
+      return oppositeCorners[availableOppositeOfEnemyCorner[0]]
+    }*/
   /*else if(lonleyO) {
-			console.log("lonley o")
-			return lonleyO.recommended
-		}*/
+      console.log("lonley o")
+      return lonleyO.recommended
+    }*/
   if (board[4] == "o") {
     if (availableAntiCorners.length > 1) {
       console.log("if you have the middle and can put in anti corner");
@@ -505,7 +505,7 @@ function isWin(board) {
         };
 
         result.positions.forEach((position) => {
-          element(`#${translate(position)}`).style.backgroundColor = "black";
+          element(`#${translate(position)}`).classList.add("black")
         });
 
         element("h2")[0].innerText =
@@ -634,7 +634,11 @@ function newGame() {
   for (let i in squares) {
     let square = squares[i];
     square.innerHTML = "";
-    if(square.style?.backgroundColor) square.style?.backgroundColor = "white"
+    square = element(`#${translate(i)}`)
+    if (square) {
+      if (square.classList.contains("black"))
+        square.classList.remove("black")
+    }
   }
 
   botTurn(board);
@@ -646,7 +650,7 @@ function yourTurn(board) {
   for (let i in squares) {
     let square = element(`#${translate(i)}`);
     if (!square) return;
-    square.onclick = function () {
+    square.onclick = function() {
       if (checkSquare(board, i)) return;
       let index = reverseTranslate(square.id);
       placeX(board, index);
@@ -669,7 +673,7 @@ function disableClicks() {
 function botTurn(board) {
   let whereToPlace = recommended(board);
   element("h2")[0].innerText = "It's my turn!";
-  setTimeout(function () {
+  setTimeout(function() {
     placeCircle(board, whereToPlace);
     if (isWin(board)) return;
     yourTurn(board);

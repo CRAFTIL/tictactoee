@@ -481,7 +481,7 @@ function isWin(board) {
         };
 
         result.positions.forEach((position) => {
-          element(`#${translate(position)}`).style.backgroundColor = "black";
+          element(`#${translate(position)}`).classList.add("black")
         });
 
         element("h2")[0].innerText =
@@ -610,7 +610,12 @@ function newGame() {
   for (let i in squares) {
     let square = squares[i];
     square.innerHTML = "";
-    if(square.style?.backgroundColor) square.style?.backgroundColor = "white"
+    square = element(`#${translate(i)}`)
+    if (square) {
+      if (square.classList.contains("black"))
+        square.classList.remove("black")
+    }
+
   }
 
   yourTurn(board);
