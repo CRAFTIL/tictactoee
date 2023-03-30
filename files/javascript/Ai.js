@@ -201,6 +201,7 @@ function findTrapsV2(board) {
 function findTraps(board) {
   if (board[4] == "o") {
     if (corners.filter((c) => board[c] == "x").length == 2) {
+      if(checkAvailableAntiCorners(board).length < 1) return false;
       return {
         isTrue: true,
         rcmnd: randomArray(checkAvailableAntiCorners(board)),
@@ -384,13 +385,16 @@ function recommended(board) {
   );
   //isTrap = findTraps(board);
   if (firstTurn) {
-    console.log("first turn put in corner!");
-    return randomArray(corners);
+    console.log("first turn!");
+    //return randomArray(corners);
+    let corner = randomArray(corners);
+    return randomArray([corner, corner, corner, corner, 4])
+    //to make it less boring once in 5 games he will put in the middle - worse but more intresting i guess!
   }
   if (twoAI) {
-    console.log("checkmate");
+    console.log("----------checkmate----------");
     return twoAI.recommended;
-  } else if (twoPlayer) {
+  } if (twoPlayer) {
     console.log("block check");
     return twoPlayer.recommended;
   } else if (isMakeTrap) {
@@ -509,10 +513,9 @@ function isWin(board) {
         });
 
         element("h2")[0].innerText =
-          result.winner == "o" ? "I win!" : "You win!";
+          result.winner == "o" ? "I win!" : ()=>{console.log("----------game over - I lost - How??----------"); return "You win!"};
         element("#playagain").style.display = "block";
         element("#playagain1").style.display = "block";
-        console.log("victory");
         return;
       }
     });
@@ -522,6 +525,7 @@ function isWin(board) {
     element("#playagain").style.display !== "block"
   ) {
     //is draw
+    console.log("----------game over - draw----------")
     result = {
       isWin: false,
       winner: "draw",
