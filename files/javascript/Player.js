@@ -621,6 +621,16 @@ function newGame() {
   yourTurn(board);
 }
 
+//for messing with stuf on console
+function removeSquare(board, index) {
+  element(`#${translate(index)}`).innerHTML = ""
+  board[index] = index
+}
+
+function freePlayMode(board) {
+
+}
+
 function yourTurn(board) {
   let squares = element("td");
   element("h2")[0].innerText = "It's your turn!";

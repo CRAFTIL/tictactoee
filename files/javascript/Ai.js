@@ -513,7 +513,7 @@ function isWin(board) {
         });
 
         element("h2")[0].innerText =
-          result.winner == "o" ? "I win!" : ()=>{console.log("----------game over - I lost - How??----------"); return "You win!"};
+          result.winner == "o" ? "I win!" : function(){console.log("----------game over - I lost - How??----------"); return "You win!"}();
         element("#playagain").style.display = "block";
         element("#playagain1").style.display = "block";
         return;
@@ -646,6 +646,16 @@ function newGame() {
   }
 
   botTurn(board);
+}
+
+//for messing with stuf on console
+function removeSquare(board, index) {
+  element(`#${translate(index)}`).innerHTML = ""
+  board[index] = index
+}
+
+function freePlayMode(board) {
+
 }
 
 function yourTurn(board) {
