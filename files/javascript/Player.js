@@ -82,6 +82,7 @@ let cornerStats = {
 };
 
 var board = newGame();
+newGame();
 
 
 function isTwoInARowPlayer(board, uhhuhyes) {
@@ -485,7 +486,7 @@ function isWin(board) {
         });
 
         element("h2")[0].innerText =
-          result.winner == "o" ? "I win!" : "You win!";
+          result.winner == "o" ? "המחשב ניצח!" : "ניצחת!";
         element("#playagain").style.display = "block";
         element("#playagain1").style.display = "block";
         console.log("victory");
@@ -504,7 +505,7 @@ function isWin(board) {
     };
 
     element("h2")[0].style.display = "block";
-    element("h2")[0].innerText = `It's a draw!`;
+    element("h2")[0].innerText = `זה תיקו!`;
     element("#playagain").style.display = "block";
     element("#playagain1").style.display = "block";
   }
@@ -628,12 +629,50 @@ function removeSquare(board, index) {
 }
 
 function freePlayMode(board) {
+   element("h2")[0].innerText == "תורך!" ? freePlayXTurn(board) : freePlayOTurn(board)
+}
 
+function exitFreePlayMode(board) {
+  element("h2")[0].innerText == "תור עיגול!" ? botTurn(board) : yourTurn(board)
+}
+
+function freePlayOTurn(board) {
+  let squares = element("td");
+  element("h2")[0].innerText = "תור עיגול!";
+  for (let i in squares) {
+    let square = element(`#${translate(i)}`);
+    if (!square) return;
+    square.onclick = function() {
+      if (checkSquare(board, i)) return;
+      let index = reverseTranslate(square.id);
+      placeCircle(board, index);
+      disableClicks();
+      if (isWin(board)) return;
+      freePlayXTurn(board);
+    };
+  }
+}
+
+function freePlayXTurn(board) {
+  let squares = element("td");
+  element("h2")[0].innerText = "תור איקס!";
+  for (let i in squares) {
+    let square = element(`#${translate(i)}`);
+    if (!square) return;
+    square.onclick = function() {
+      if (checkSquare(board, i)) return;
+      let index = reverseTranslate(square.id);
+      placeX(board, index);
+      disableClicks();
+      if (isWin(board)) return;
+      freePlayOTurn(board);
+    };
+  }
 }
 
 function yourTurn(board) {
   let squares = element("td");
-  element("h2")[0].innerText = "It's your turn!";
+  element("h2")[0].innerText = "תורך!";
   for (let i in squares) {
     let square = element(`#${translate(i)}`);
     if (!square) return;
@@ -659,7 +698,7 @@ function disableClicks() {
 
 function botTurn(board) {
   let whereToPlace = recommended(board);
-  element("h2")[0].innerText = "It's my turn!";
+  element("h2")[0].innerText = "תור המחשב!";
   setTimeout(function() {
     placeCircle(board, whereToPlace);
     if (isWin(board)) return;

@@ -1,3 +1,7 @@
+
+var ximg = "https://i.postimg.cc/wjNHXJ0L/x-o-3.png";
+var oimg = "https://i.postimg.cc/76kgHgQV/x-o-2.png";
+
 let freshBoard = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 let corners = [0, 2, 6, 8];
 let antiCorners = [1, 3, 5, 7];
@@ -362,6 +366,18 @@ function trapAttempt(board) {
           position: oppositeCorners[theCorner]
         }
       }
+    } 
+  } else if(board[4] == "o") {
+    let playerCorners = corners.filter(corner => checkSquare(board, corner) == "x")
+   if(playerCorners.length == 1) {
+      let theCorner = playerCorners[0]
+      let everythingElse = freshBoard.filter(square => ![4, theCorner].includes(square))
+      if (everythingElse.every(square => !checkSquare(board, square))) {
+        return {
+          isTrue: true,
+          position: oppositeCorners[theCorner]
+        }
+      }
     }
   }
   return false;
@@ -513,7 +529,7 @@ function isWin(board) {
         });
 
         element("h2")[0].innerText =
-          result.winner == "o" ? "I win!" : function(){console.log("----------game over - I lost - How??----------"); return "You win!"}();
+          result.winner == "o" ? "המחשב ניצח!" : function(){console.log("----------game over - I lost - How??----------"); return "ניצחת!"}();
         element("#playagain").style.display = "block";
         element("#playagain1").style.display = "block";
         return;
@@ -532,7 +548,7 @@ function isWin(board) {
     };
 
     element("h2")[0].style.display = "block";
-    element("h2")[0].innerText = `It's a draw!`;
+    element("h2")[0].innerText = `זה תיקו!`;
     element("#playagain").style.display = "block";
     element("#playagain1").style.display = "block";
   }
@@ -654,13 +670,75 @@ function removeSquare(board, index) {
   board[index] = index
 }
 
-function freePlayMode(board) {
+function setSquare(board, index, whatToSet = index) {
+  if(checkSquare(board, index)) removeSquare(board, index)
+  board[index] = whatToSet
+  setVisualSquare(index, whatToSet)
+}
 
+function setVisualSquare(index, whatToSet = index) {
+  if(!["x", "o"].includes(whatToSet)) return element(`#${translate(index)}`).innerHTML = "";
+  let img = whatToSet == "x" ? ximg : oimg 
+  element(`#${translate(index)}`).innerHTML = `<img src="${img}">`;
+}
+
+function importBoard(board, newBoard, turn, timeOut) {
+for (i in newBoard) {
+  setSquare(board, i, newBoard[i])
+}
+  if(timeOut) {
+    return setTimeout(() => {
+      turn == "x" ? yourTurn(newBoard) : botTurn(newBoard)
+    }, timeOut)
+  }
+  turn == "x" ? yourTurn(newBoard) : botTurn(newBoard)
+}
+
+function freePlayMode(board) {
+   element("h2")[0].innerText == "תורך!" ? freePlayXTurn(board) : freePlayOTurn(board)
+}
+
+function exitFreePlayMode(board) {
+  element("h2")[0].innerText == "תור עיגול" ? botTurn(board) : yourTurn(board)
+}
+
+function freePlayOTurn(board) {
+  let squares = element("td");
+  element("h2")[0].innerText = "תור עיגול";
+  for (let i in squares) {
+    let square = element(`#${translate(i)}`);
+    if (!square) return;
+    square.onclick = function() {
+      if (checkSquare(board, i)) return;
+      let index = reverseTranslate(square.id);
+      placeCircle(board, index);
+      disableClicks();
+      if (isWin(board)) return;
+      freePlayXTurn(board);
+    };
+  }
+}
+
+function freePlayXTurn(board) {
+  let squares = element("td");
+  element("h2")[0].innerText = "תור איקס";
+  for (let i in squares) {
+    let square = element(`#${translate(i)}`);
+    if (!square) return;
+    square.onclick = function() {
+      if (checkSquare(board, i)) return;
+      let index = reverseTranslate(square.id);
+      placeX(board, index);
+      disableClicks();
+      if (isWin(board)) return;
+      freePlayOTurn(board);
+    };
+  }
 }
 
 function yourTurn(board) {
   let squares = element("td");
-  element("h2")[0].innerText = "It's your turn!";
+  element("h2")[0].innerText = "תורך!";
   for (let i in squares) {
     let square = element(`#${translate(i)}`);
     if (!square) return;
@@ -686,7 +764,7 @@ function disableClicks() {
 
 function botTurn(board) {
   let whereToPlace = recommended(board);
-  element("h2")[0].innerText = "It's my turn!";
+  element("h2")[0].innerText = "תור המחשב!";
   setTimeout(function() {
     placeCircle(board, whereToPlace);
     if (isWin(board)) return;
@@ -705,5 +783,3 @@ function placeX(board, position) {
   $(`#${translate(position)}`).append(`<img src="${ximg}">`);
 }
 
-var ximg = "https://i.postimg.cc/wjNHXJ0L/x-o-3.png";
-var oimg = "https://i.postimg.cc/76kgHgQV/x-o-2.png";
