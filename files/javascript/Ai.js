@@ -83,7 +83,21 @@ let cornerStats = {
   8: [5, 7],
 };
 
-var board = newGame();
+var board;
+newGame()
+
+function devMode() {
+  let dev = element(".dev")
+  let changeTo = dev[0].style.display == "block" ? "none" : "block"
+  for (i in dev) {
+    try {
+    dev[i].style.display = changeTo
+    } catch {
+      return;
+    }
+    
+  }
+} 
 
 function isTwoInARowPlayer(board, uhhuhyes) {
   var result;
@@ -404,8 +418,12 @@ function recommended(board) {
     console.log("first turn!");
     //return randomArray(corners);
     let corner = randomArray(corners);
-    return randomArray([corner, corner, corner, corner, 4])
-    //to make it less boring once in 5 games he will put in the middle - worse but more intresting i guess!
+    //return randomArray([corner, corner, corner, corner, 4])
+
+    return corner
+    //to make it less boring once in 5 games he will put in the middle - worse but more intresting i guess! 
+    //deprecated i realized this is dumb since the bot putting in the corner is just losing 
+    //maybe ill make like a medium (beatable) mode where he puts in middle in the future
   }
   if (twoAI) {
     console.log("----------checkmate----------");
@@ -530,15 +548,15 @@ function isWin(board) {
 
         element("h2")[0].innerText =
           result.winner == "o" ? "המחשב ניצח!" : function(){console.log("----------game over - I lost - How??----------"); return "ניצחת!"}();
-        element("#playagain").style.display = "block";
-        element("#playagain1").style.display = "block";
+          element(".playagain")[0].style.display = "block";
+          element(".playagain")[1].style.display = "block";
         return;
       }
     });
   }
   if (
     checkAvailable(board).length < 1 &&
-    element("#playagain").style.display !== "block"
+    element(".playagain")[0].style.display !== "block"
   ) {
     //is draw
     console.log("----------game over - draw----------")
@@ -549,8 +567,8 @@ function isWin(board) {
 
     element("h2")[0].style.display = "block";
     element("h2")[0].innerText = `זה תיקו!`;
-    element("#playagain").style.display = "block";
-    element("#playagain1").style.display = "block";
+    element(".playagain")[0].style.display = "block";
+    element(".playagain")[1].style.display = "block";
   }
   return result;
 }
@@ -648,8 +666,8 @@ function newBoard() {
 
 function newGame() {
   board = newBoard();
-  element("#playagain").style.display = "none";
-  element("#playagain1").style.display = "none";
+  element(".playagain")[0].style.display = "none";
+  element(".playagain")[1].style.display = "none";
   let squares = element("td");
   for (let i in squares) {
     let square = squares[i];
@@ -686,6 +704,18 @@ function importBoard(board, newBoard, turn, timeOut) {
 for (i in newBoard) {
   setSquare(board, i, newBoard[i])
 }
+
+let squares = element("td")
+
+for (let i in squares) {
+  let square = squares[i];
+  square = element(`#${translate(i)}`)
+  if (square) {
+    if (square.classList.contains("black"))
+      square.classList.remove("black")
+  }
+}
+
   if(timeOut) {
     return setTimeout(() => {
       turn == "x" ? yourTurn(newBoard) : botTurn(newBoard)

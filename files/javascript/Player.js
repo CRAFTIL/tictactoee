@@ -81,9 +81,21 @@ let cornerStats = {
   8: [5, 7],
 };
 
-var board = newGame();
+var board;
 newGame();
 
+function devMode() {
+  let dev = element(".dev")
+  let changeTo = dev[0].style.display == "block" ? "none" : "block"
+  for (i in dev) {
+    try {
+    dev[i].style.display = changeTo
+    } catch {
+      return;
+    }
+    
+  }
+}
 
 function isTwoInARowPlayer(board, uhhuhyes) {
   var result;
@@ -487,8 +499,8 @@ function isWin(board) {
 
         element("h2")[0].innerText =
           result.winner == "o" ? "המחשב ניצח!" : "ניצחת!";
-        element("#playagain").style.display = "block";
-        element("#playagain1").style.display = "block";
+          element(".playagain")[0].style.display = "block";
+          element(".playagain")[1].style.display = "block";
         console.log("victory");
         return;
       }
@@ -496,7 +508,7 @@ function isWin(board) {
   }
   if (
     checkAvailable(board).length < 1 &&
-    element("#playagain").style.display !== "block"
+    element(".playagain")[0].style.display !== "block"
   ) {
     //is draw
     result = {
@@ -506,8 +518,8 @@ function isWin(board) {
 
     element("h2")[0].style.display = "block";
     element("h2")[0].innerText = `זה תיקו!`;
-    element("#playagain").style.display = "block";
-    element("#playagain1").style.display = "block";
+    element(".playagain")[0].style.display = "block";
+    element(".playagain")[1].style.display = "block";
   }
   return result;
 }
@@ -605,8 +617,8 @@ function newBoard() {
 
 function newGame() {
   board = newBoard();
-  element("#playagain").style.display = "none";
-  element("#playagain1").style.display = "none";
+  element(".playagain")[0].style.display = "none";
+  element(".playagain")[1].style.display = "none";
   let squares = element("td");
   for (let i in squares) {
     let square = squares[i];

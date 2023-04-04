@@ -40,18 +40,20 @@ h2 {
 font-size: 30px;
 }
 
-#playagain {
+.playagain {
+	display: none;
+}
+
+.btn {
 	border-radius: 20px;
 	font-size: 50px;
 	text-align: center;
+}
+
+.dev {
 	display: none;
 }
-#playagain1 {
-	border-radius: 20px;
-	font-size: 50px;
-	text-align: center;
-	display: none;
-}
+
 
 div {
 	text-align: center;
@@ -80,9 +82,12 @@ div {
 		  <td id="eight"></td>
 		</tr>
 	  </table>
-	  <h2>It's your turn!</h2>
-	  <button id="playagain" onclick="newGame()">המחשב מתחיל</button>
-      <button id="playagain1" onclick="window.location.href='/ai1'">אתה מתחיל</button>
+	  <h2>תור המחשב!</h2>
+	  <button class="playagain btn" onclick="newGame()">המחשב מתחיל</button>
+      <button class="playagain btn" onclick="window.location.href='/ai1'">אתה מתחיל</button>
+	  <button class= "dev btn" id="freeplay" onclick="freePlayMode(board)">מצב חופשי</button>
+	  <button class= "dev btn" id="exitfreeplay" onclick="exitFreePlayMode(board)">צא ממצב חופשי</button>
+	  <button class= "dev btn" id="resetboard" onclick="importBoard(board, [0,1,2,3,4,5,6,7,8], 'o', 1000)">אפס את הלוח</button>
 	  </div>
 
 </body>
