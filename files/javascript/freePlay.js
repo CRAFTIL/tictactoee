@@ -1,3 +1,12 @@
+//const lang = require("../lang.js")
+//lang is defined globally since its imported as a script
+
+var chosenLang = getLang() || "english"
+
+var oppositeLang = {
+  english : "hebrew",
+  hebrew : "english"
+}
 
 let corners = [0, 2, 6, 8]
 
@@ -51,7 +60,7 @@ function isWin(board) {
           element(`#${translate(position)}`).classList.add("black")
         })
 
-        element("h2")[0].innerText = result.winner == "o" ? "The winner is O!" : "The winner is X!"
+        element("h2")[0].innerText = result.winner == "o" ? lang.winner.o[chosenLang] : lang.winner.x[chosenLang]
         element("#playagain").style.display = "block"
         console.log("victory")
         return;
@@ -68,7 +77,7 @@ function isWin(board) {
     }
 
     element("h2")[0].style.display = "block"
-    element("h2")[0].innerText = `It's a draw!`
+    element("h2")[0].innerText = lang.winner.draw[chosenLang]
     element("#playagain").style.display = "block"
 
   }
@@ -122,9 +131,46 @@ function newBoard() {
     3, 4, 5,
     6, 7, 8
   ]
+
+}
+function searchObject(obj, searchValue) {
+  let result;
+  for (let i in obj) {
+    if (typeof obj[i] === "object") {
+      result = searchObject(obj[i], searchValue);
+      if (result) {
+        return result;
+      }
+    } else if (obj[i] === searchValue) {
+      return obj;
+    }
+  }
+  return result;
 }
 
-function newGame() {
+var oppositeLang = {
+  english : "hebrew",
+  hebrew : "english"
+}
+
+function reloadTitles(newLang = oppositeLang[chosenLang]) {
+  chosenLang = newLang
+  element("#main").innerText = lang.main[chosenLang] //main tictactoe title
+  element("#back").innerText = lang.back[chosenLang] 
+  element("#playagain").innerText = lang.playagain[chosenLang] 
+  let helperTxt = element("#helper").innerText
+  if(helperTxt) {
+    let entry = searchObject(lang, helperTxt)
+    element("#helper").innerText = entry[chosenLang]
+  }
+
+  setLang(newLang)
+
+}
+
+function newGame(newLang) {
+  if(newLang) chosenLang = newLang //to switch lang
+  reloadTitles(chosenLang)
   board = newBoard()
   element("#playagain").style.display = "none"
   let squares = element("td")
@@ -144,7 +190,7 @@ function newGame() {
 
 function yourTurn(board) {
   let squares = element("td")
-  element("h2")[0].innerText = "It's X's turn!"
+  element("h2")[0].innerText = lang.turn.x[chosenLang]
   for (let i in squares) {
     let square = element(`#${translate(i)}`)
     if (!square) return
@@ -170,7 +216,7 @@ function disableClicks() {
 
 function botTurn(board) {
   let squares = element("td")
-  element("h2")[0].innerText = "It's O's turn!"
+  element("h2")[0].innerText = lang.turn.o[chosenLang]
   for (let i in squares) {
     let square = element(`#${translate(i)}`)
     if (!square) return

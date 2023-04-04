@@ -1,10 +1,15 @@
 
+//const lang = require("../lang.js")
+//lang is defined globally since its imported as a script
+
+var chosenLang = getLang() || "english"
+
 var ximg = "https://i.postimg.cc/wjNHXJ0L/x-o-3.png";
 var oimg = "https://i.postimg.cc/76kgHgQV/x-o-2.png";
 
-let freshBoard = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-let corners = [0, 2, 6, 8];
-let antiCorners = [1, 3, 5, 7];
+var freshBoard = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+var corners = [0, 2, 6, 8];
+var antiCorners = [1, 3, 5, 7];
 
 let possibleWins = {
   0: [
@@ -82,6 +87,8 @@ let cornerStats = {
   6: [3, 7],
   8: [5, 7],
 };
+
+
 
 var board;
 newGame()
@@ -547,7 +554,7 @@ function isWin(board) {
         });
 
         element("h2")[0].innerText =
-          result.winner == "o" ? "המחשב ניצח!" : function(){console.log("----------game over - I lost - How??----------"); return "ניצחת!"}();
+          result.winner == "o" ? lang.winner.computer[chosenLang] : function(){console.log("----------game over - I lost - How??----------"); return lang.winner.you[chosenLang]}();
           element(".playagain")[0].style.display = "block";
           element(".playagain")[1].style.display = "block";
         return;
@@ -566,7 +573,7 @@ function isWin(board) {
     };
 
     element("h2")[0].style.display = "block";
-    element("h2")[0].innerText = `זה תיקו!`;
+    element("h2")[0].innerText = lang.winner.draw[chosenLang];
     element(".playagain")[0].style.display = "block";
     element(".playagain")[1].style.display = "block";
   }
@@ -583,88 +590,53 @@ function checkAvailableAntiCorners(board) {
   return antiCorners.filter((e) => available.includes(e));
 }
 
-function element(query = "") {
-  if (query.startsWith("#")) {
-    return document.getElementById(query.split("#")[1]);
-  }
-  if (query.startsWith(".")) {
-    return document.getElementsByClassName(query.split(".")[1]);
-  } else {
-    return document.getElementsByTagName(query);
-  }
-}
 
-function translate(number = 1) {
-  number = number.toString();
-  switch (number) {
-    case "0":
-      return "zero";
-      break;
-    case "1":
-      return "one";
-      break;
-    case "2":
-      return "two";
-      break;
-    case "3":
-      return "three";
-      break;
-    case "4":
-      return "four";
-      break;
-    case "5":
-      return "five";
-      break;
-    case "6":
-      return "six";
-      break;
-    case "7":
-      return "seven";
-      break;
-    case "8":
-      return "eight";
-      break;
-  }
-}
 
-function reverseTranslate(number = "") {
-  number = number.toString();
-  switch (number) {
-    case "zero":
-      return "0";
-      break;
-    case "one":
-      return "1";
-      break;
-    case "two":
-      return "2";
-      break;
-    case "three":
-      return "3";
-      break;
-    case "four":
-      return "4";
-      break;
-    case "five":
-      return "5";
-      break;
-    case "six":
-      return "6";
-      break;
-    case "seven":
-      return "7";
-      break;
-    case "eight":
-      return "8";
-      break;
-  }
-}
 
 function newBoard() {
   return [0, 1, 2, 3, 4, 5, 6, 7, 8];
 }
 
-function newGame() {
+function searchObject(obj, searchValue) {
+  let result;
+  for (let i in obj) {
+    if (typeof obj[i] === "object") {
+      result = searchObject(obj[i], searchValue);
+      if (result) {
+        return result;
+      }
+    } else if (obj[i] === searchValue) {
+      return obj;
+    }
+  }
+  return result;
+}
+
+var oppositeLang = {
+  english : "hebrew",
+  hebrew : "english"
+}
+
+function reloadTitles(newLang = oppositeLang[chosenLang]) {
+  chosenLang = newLang
+  element("#main").innerText = lang.main[chosenLang] //main tictactoe title
+    element("#title").innerText = lang.main[chosenLang] 
+  element("#back").innerText = lang.back[chosenLang] 
+  element("#buttons.you").innerText = lang.buttons.you[chosenLang]
+  element("#buttons.computer").innerText = lang.buttons.computer[chosenLang]
+  let helperTxt = element("#helper").innerText
+  if(helperTxt) {
+    let entry = searchObject(lang, helperTxt)
+    element("#helper").innerText = entry[chosenLang]
+  }
+
+  setLang(newLang)
+
+}
+
+function newGame(newLang) {
+  if(newLang) chosenLang = newLang //to switch lang
+  reloadTitles(chosenLang)
   board = newBoard();
   element(".playagain")[0].style.display = "none";
   element(".playagain")[1].style.display = "none";
@@ -725,16 +697,16 @@ for (let i in squares) {
 }
 
 function freePlayMode(board) {
-   element("h2")[0].innerText == "תורך!" ? freePlayXTurn(board) : freePlayOTurn(board)
+   element("h2")[0].innerText == lang.turn.you[chosenLang] ? freePlayXTurn(board) : freePlayOTurn(board)
 }
 
 function exitFreePlayMode(board) {
-  element("h2")[0].innerText == "תור עיגול" ? botTurn(board) : yourTurn(board)
+  element("h2")[0].innerText == lang.turn.o[chosenLang] ? botTurn(board) : yourTurn(board)
 }
 
 function freePlayOTurn(board) {
   let squares = element("td");
-  element("h2")[0].innerText = "תור עיגול";
+  element("h2")[0].innerText = lang.turn.o[chosenLang];
   for (let i in squares) {
     let square = element(`#${translate(i)}`);
     if (!square) return;
@@ -751,7 +723,7 @@ function freePlayOTurn(board) {
 
 function freePlayXTurn(board) {
   let squares = element("td");
-  element("h2")[0].innerText = "תור איקס";
+  element("h2")[0].innerText = lang.turn.x[chosenLang];
   for (let i in squares) {
     let square = element(`#${translate(i)}`);
     if (!square) return;
@@ -768,7 +740,7 @@ function freePlayXTurn(board) {
 
 function yourTurn(board) {
   let squares = element("td");
-  element("h2")[0].innerText = "תורך!";
+  element("h2")[0].innerText = lang.turn.you[chosenLang];
   for (let i in squares) {
     let square = element(`#${translate(i)}`);
     if (!square) return;
@@ -794,7 +766,7 @@ function disableClicks() {
 
 function botTurn(board) {
   let whereToPlace = recommended(board);
-  element("h2")[0].innerText = "תור המחשב!";
+  element("h2")[0].innerText = lang.turn.computer[chosenLang];
   setTimeout(function() {
     placeCircle(board, whereToPlace);
     if (isWin(board)) return;

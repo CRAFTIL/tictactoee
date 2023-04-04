@@ -5,14 +5,55 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-
+.btn {
+	border-radius: 20px;
+	font-size: 50px;
+	text-align: center;
+}
+h1 {
+    text-align: center;
+}
     </style>
-    <title>Document</title>
+    <title id="title"></title>
 </head>
-<body>
-    <h1>איקס עיגול</h1>
-    <a class="but" id="ai" href="/ai1">נגד המחשב ואתה מתחיל</a>
-    <a class="but" id="ai" href="/ai2">נגד המחשב והמחשב מתחיל</a>
-    <a class="but" id="freeplay" href="/freeplay">נגד חבר</a>
+<body> 
+    <h1 id="main"></h1>
+    <button class="btn" id="buttons.you" onclick="window.location.href='ai1'"></button>
+    <button class="btn" id="buttons.computer" onclick="window.location.href='ai2'"></button>
+    <button class="btn" id="buttons.freePlay" onclick="window.location.href='/freeplay'"></button>
+    <p></p>
+    <button class="btn" onclick="reloadTitles()" id="switchLang">Language/שפה</button>
 </body>
 </html>
+
+<script src="/lang.js"></script>
+<script src="/funcs.js"></script>
+
+<script>
+//const lang = require("../lang.js")
+//lang is defined globally since its imported as a script
+
+var chosenLang = getLang() || "english"
+
+var oppositeLang = {
+  english : "hebrew",
+  hebrew : "english"
+}
+
+
+function reloadTitles(newLang = oppositeLang[chosenLang]) {
+  chosenLang = newLang
+  element("#main").innerText = lang.main[chosenLang] //main tictactoe title
+  element("#title").innerText = lang.main[chosenLang] 
+  element("#buttons.you").innerText = lang.buttons.you[chosenLang]
+  element("#buttons.computer").innerText = lang.buttons.computer[chosenLang]
+  element("#buttons.freePlay").innerText = lang.buttons.freePlay[chosenLang]
+
+
+  setLang(newLang)
+
+}
+
+reloadTitles(chosenLang)
+
+</script>

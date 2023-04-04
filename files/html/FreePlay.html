@@ -40,11 +40,17 @@ h2 {
 font-size: 30px;
 }
 
-#playagain {
+.playagain {
 	border-radius: 20px;
 	font-size: 50px;
 	text-align: center;
 	display: none;
+}
+
+.btn {
+	border-radius: 20px;
+	font-size: 50px;
+	text-align: center;
 }
 
 div {
@@ -56,7 +62,7 @@ div {
 </head>
 <body>
 	<div>
-	<h1>איקס עיגול</h1>
+	<h1 id="main">איקס עיגול</h1>
 	<table>
 		<tr>
 		  <td id="zero"></td>
@@ -74,11 +80,15 @@ div {
 		  <td id="eight"></td>
 		</tr>
 	  </table>
-	  <h2>It's your turn!</h2>
-	  <button id="playagain" onclick="newGame()">Play again</button>
+	  <h2 id="helper">It's your turn!</h2>
+	  <button class="playagain" id="playagain" onclick="newGame()"></button>
+	  <button class="btn" onclick="reloadTitles()" id="switchLang">Language/שפה</button>
+	  <button class="btn" onclick="window.location.href='/'" id="back"></button>
 	  </div>
 
 </body>
 </html>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="/lang.js"></script>
+<script src="/funcs.js"></script>
 <script src="./javascript/freePlay.js"></script>
