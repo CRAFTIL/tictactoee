@@ -2,11 +2,11 @@ var lang = {
     "winner": {
       "o": {
         "english": "The winner is O!",
-        "hebrew": "המנצח הוא O!"
+        "hebrew": "המנצח הוא עיגול!"
       },
       "x": {
         "english": "The winner is X!",
-        "hebrew": "המנצח הוא X!"
+        "hebrew": "המנצח הוא איקס!"
       },
       "computer": {
         "english": "The computer wins!",
@@ -25,11 +25,11 @@ var lang = {
     "turn": {
       "o": {
         "english": "It's O's turn!",
-        "hebrew": "תור O!"
+        "hebrew": "תור עיגול!"
       },
       "x": {
         "english": "It's X's turn!",
-        "hebrew": "תור X!"
+        "hebrew": "תור איקס!"
       },
       "computer": {
         "english": "It's the computer's turn",
